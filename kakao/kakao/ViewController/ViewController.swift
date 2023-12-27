@@ -20,6 +20,7 @@ final class ViewController: UIViewController {
         
     
         setMainView()
+        setButtonAction()
     }
     
     private func setMainView() {
@@ -27,15 +28,20 @@ final class ViewController: UIViewController {
         if let resultView = mainView {
             view.addSubview(resultView)
             resultView.setView()
-
-            
         }
     }
-
     
-    @objc func loginKakao() {
-        print("loginKakao() called.")
+    private func setButtonAction() {
+        let kakaoButton = mainView?.kakaoLoginButton
+        let appleButton = mainView?.appleLoginButton
         
+        kakaoButton?.addTarget(self, action: #selector(tappedKakaoButton), for: .touchUpInside)
+        
+        appleButton?.addTarget(self, action: #selector(clickAppleButton), for: .touchUpInside)
+    }
+    
+    @objc func tappedKakaoButton() {
+        print("Kakao Login Button")
         if (UserApi.isKakaoTalkLoginAvailable()) {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
@@ -51,7 +57,11 @@ final class ViewController: UIViewController {
         }
     }
     
+    @objc func clickAppleButton() {
+        print("Apple Login Button")
+        let appleLoginVC = AppleLoginViewController()
+        navigationController?.pushViewController(appleLoginVC, animated: true)
+    }
     
-
+    
 }
-
