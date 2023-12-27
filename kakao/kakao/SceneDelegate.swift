@@ -15,10 +15,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = ViewController()
+        let viewcontroller = ViewController()
+        window.rootViewController = viewcontroller
+        let navigationViewController = UINavigationController(rootViewController: viewcontroller)
+        window.rootViewController = navigationViewController
+
         window.makeKeyAndVisible()
         self.window = window
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                _ = AuthController.handleOpenUrl(url: url)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -50,13 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 
-    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        if let url = URLContexts.first?.url {
-            if (AuthApi.isKakaoTalkLoginUrl(url)) {
-                _ = AuthController.handleOpenUrl(url: url)
-            }
-        }
-    }
+    
     
 
 }
