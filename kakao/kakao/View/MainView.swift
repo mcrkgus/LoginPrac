@@ -19,8 +19,8 @@ final class MainView: UIView {
     // MARK: - Properties
     
     private let descriptLabel = UILabel()
-    private let kakaoLoginButton = UIButton()
-    private let appleLoginButton = UIButton()
+    let kakaoLoginButton = UIButton()
+    let appleLoginButton = UIButton()
 
     
     // MARK: - Life Cycle
@@ -36,36 +36,16 @@ final class MainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Make View
+    
     func setView() {
         setUI()
         setHierachy()
         setLayout()
     }
-    
-    
-    @objc func clickKakaoButton() {
-        print("Kakao Login Button")
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                }
-                else {
-                    print("loginWithKakaoTalk() success.")
-                }
-            }
-        }
-        else {
-            print("카카오톡 미설치")
-        }
-        
 
-    }
     
-    @objc func clickAppleButton() {
-        print("Apple Login Button")
-    }
-    
+    // MARK: - set UI
     
     private func setUI() {
         self.backgroundColor = .white
@@ -81,20 +61,23 @@ final class MainView: UIView {
             $0.setTitle("카카오로 로그인하기", for: .normal)
             $0.setTitleColor(.black, for: .normal)
             $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
-            $0.layer.cornerRadius = 9
-            $0.addTarget(self, action: #selector(clickKakaoButton), for: .touchUpInside)
+            $0.layer.cornerRadius = 23
         }
         
         appleLoginButton.do {
-            $0.backgroundColor = .black
-            $0.setTitle("Apple로 로그인하기", for: .normal)
-            $0.setTitleColor(.white, for: .normal)
-            $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
-            $0.layer.cornerRadius = 9
-            $0.addTarget(self, action: #selector(clickAppleButton), for: .touchUpInside)
-            
+            $0.backgroundColor = .white
+            $0.setImage(UIImage(systemName: "applelogo"), for: .normal)
+            $0.titleLabel?.font = .systemFont(ofSize: 17.0)
+            $0.imageView?.tintColor = .black
+            $0.layer.borderWidth = 0.5
+            $0.setTitle("   Sign in with Apple  ", for: .normal)
+            $0.setTitleColor(.black, for: .normal)
+            $0.layer.cornerRadius = 23
         }
     }
+    
+    
+    // MARK: - set Hierachy
     
     private func setHierachy() {
         self.addSubview(descriptLabel)
@@ -102,6 +85,8 @@ final class MainView: UIView {
         self.addSubview(appleLoginButton)
     }
     
+    
+    // MARK: - set Layout
     
     private func setLayout() {
         descriptLabel.snp.makeConstraints {
@@ -111,16 +96,24 @@ final class MainView: UIView {
         
         kakaoLoginButton.snp.makeConstraints {
             $0.top.equalTo(descriptLabel.snp.top).offset(90)
-            $0.centerX.equalTo(descriptLabel.snp.centerX)
         }
         
         appleLoginButton.snp.makeConstraints {
             $0.top.equalTo(kakaoLoginButton.snp.top).offset(90)
-            $0.centerX.equalTo(descriptLabel.snp.centerX)
         }
         
-        
+        [kakaoLoginButton, appleLoginButton].forEach {
+            $0.snp.makeConstraints {
+                //$0.top.equalTo(kakaoLoginButton.snp.top).offset(90)
+                $0.centerX.equalTo(descriptLabel.snp.centerX)
+                $0.height.equalTo(50)
+                $0.leading.trailing.equalToSuperview().inset(60)
+            }
+        }
     }
+    
+    
+    // MARK: - check User Info
     
     func setUserInfo() {
         UserApi.shared.me {(user, error) in
@@ -133,11 +126,7 @@ final class MainView: UIView {
                 guard let userId = user?.id else {return}
                 
                 print("닉네임 : \(user?.kakaoAccount?.profile?.nickname ?? "no nickname").....이메일 : \(user?.kakaoAccount?.email ?? "no nickname"). . . . .유저 ID : \(userId)")
-   
             }
         }
     }
-    
 }
-
-
