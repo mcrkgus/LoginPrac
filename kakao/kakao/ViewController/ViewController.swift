@@ -12,16 +12,27 @@ import KakaoSDKUser
 
 final class ViewController: UIViewController {
     
+    // MARK: - Properties
+    
     private var mainView : MainView?
     
 
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    
+
         setMainView()
         setButtonAction()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    
+    // MARK: - set up MainView
     
     private func setMainView() {
         mainView = MainView(frame: view.bounds)
@@ -30,6 +41,8 @@ final class ViewController: UIViewController {
             resultView.setView()
         }
     }
+    
+    // MARK: - Button Action
     
     private func setButtonAction() {
         let kakaoButton = mainView?.kakaoLoginButton
@@ -62,6 +75,5 @@ final class ViewController: UIViewController {
         let appleLoginVC = AppleLoginViewController()
         navigationController?.pushViewController(appleLoginVC, animated: true)
     }
-    
     
 }
