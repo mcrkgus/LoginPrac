@@ -14,8 +14,11 @@ import Then
 
 final class AppleLoginViewController: UIViewController {
 
+    // MARK: - Properties
+    
     private var subView : AppleLoginView?
     
+
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -24,6 +27,12 @@ final class AppleLoginViewController: UIViewController {
         setSubView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - set up SubView
     
     private func setSubView() {
         subView = AppleLoginView(frame: view.bounds)
@@ -32,8 +41,4 @@ final class AppleLoginViewController: UIViewController {
             resultView.setView()
         }
     }
-
-    
-
-    
 }
