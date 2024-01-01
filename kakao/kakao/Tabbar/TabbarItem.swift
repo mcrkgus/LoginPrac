@@ -65,7 +65,7 @@ enum TabbarItem: CaseIterable {
         case .home: return ViewController()
         case .category: return AppleLoginViewController()
         case .add: return nil
-        case .remind: return nil
+        case .remind: return URLSaveViewController()
         case .my: return nil
         }
     }
