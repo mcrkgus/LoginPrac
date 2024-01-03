@@ -11,29 +11,30 @@ import SnapKit
 import Then
 
 class TitleHeaderCollectionReusableView: UICollectionReusableView {
- 
+    
     private let titleLabel = UILabel()
     
     override init(frame: CGRect) {
-            super.init(frame: frame)
-        }
+        super.init(frame: frame)
+        self.backgroundColor = .white
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    func configure() {
+
         
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-        }
-        
-        func configure() {
-            backgroundColor = .black
-            
-            setupStyle()
-            setupHierarchy()
-            setupLayout()
-        }
+        setupStyle()
+        setupHierarchy()
+        setupLayout()
+    }
     
     private func setupStyle() {
         titleLabel.do {
             $0.textColor = .black
-            $0.font = .systemFont(ofSize: 20)
+            $0.font = .boldSystemFont(ofSize: 18)
             $0.text = "김가현 님의 클립 저장 "
         }
     }
@@ -44,8 +45,8 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     
     private func setupLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().inset(5)
+            $0.centerY.equalToSuperview()
         }
     }
-    
 }
