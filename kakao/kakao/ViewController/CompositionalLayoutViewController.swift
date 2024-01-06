@@ -26,16 +26,18 @@ class CompositionalLayoutViewController: UIViewController {
 extension CompositionalLayoutViewController: UICollectionViewDelegate {}
 extension CompositionalLayoutViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 4
+            return 1
         case 1:
-            return 3
+            return 4
         case 2:
+            return 3
+        case 3:
             return 9
         default:
             return 0
@@ -46,9 +48,12 @@ extension CompositionalLayoutViewController: UICollectionViewDataSource {
         //var cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         switch indexPath.section {
         case 0:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstSectionCell.className, for: indexPath) as? FirstSectionCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.className, for: indexPath) as? MainCollectionViewCell else { return UICollectionViewCell() }
             return cell
         case 1:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstSectionCell.className, for: indexPath) as? FirstSectionCell else { return UICollectionViewCell() }
+            return cell
+        case 2:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondSectionCell.className, for: indexPath) as? SecondSectionCell
             else { return UICollectionViewCell() }
             return cell
@@ -62,17 +67,17 @@ extension CompositionalLayoutViewController: UICollectionViewDataSource {
     // 헤더
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch indexPath.section {
-        case 0:
+        case 1:
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderCollectionReusableView.className, for: indexPath) as? TitleHeaderCollectionReusableView
             else { return TitleHeaderCollectionReusableView() }
             header.configure()
             return header
-        case 1:
+        case 2:
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SecondCollectionReusableView.className, for: indexPath) as? SecondCollectionReusableView
             else { return SecondCollectionReusableView() }
             header.configure()
             return header
-        case 2:
+        case 3:
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThirdCollectionReusableView.className, for: indexPath) as? ThirdCollectionReusableView
             else { return ThirdCollectionReusableView() }
             header.configure()
@@ -110,6 +115,7 @@ private extension CompositionalLayoutViewController {
         collectionView.backgroundColor = .clear
         collectionView.alwaysBounceVertical = true
         
+        collectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.className)
         collectionView.register(FirstSectionCell.self, forCellWithReuseIdentifier: FirstSectionCell.className)
         collectionView.register(SecondSectionCell.self, forCellWithReuseIdentifier: SecondSectionCell.className)
         collectionView.register(ThirdSectionCollectionViewCell.self, forCellWithReuseIdentifier: ThirdSectionCollectionViewCell.className)
