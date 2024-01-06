@@ -16,10 +16,12 @@ enum CompositionalFactory {
             
             switch sectionNumber {
             case 0:
-                section = createCardSection()
+                section = createmainSection()
             case 1:
-                section = createSecondSection()
+                section = createCardSection()
             case 2:
+                section = createSecondSection()
+            case 3:
                 section = createThirdSection()
             default:
                 section = createCardSection()
@@ -27,6 +29,32 @@ enum CompositionalFactory {
             return section
         }
     }
+    
+    static func createmainSection() -> NSCollectionLayoutSection {
+        let itemFractionalWidthFraction = 1.0
+        let itemInset: CGFloat = 3
+        
+        // item
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(itemFractionalWidthFraction),
+                                              heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: itemInset, leading: itemInset, bottom: itemInset, trailing: itemInset)
+        
+        // group
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                               heightDimension: .estimated(134))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        //section.orthogonalScrollingBehavior = .none
+        
+//        section.boundarySupplementaryItems = [
+//            NSCollectionLayoutBoundarySupplementaryItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+//        ]
+        return section
+    }
+    
     
     // MARK: - Section 1 에 대한 Layout
     
